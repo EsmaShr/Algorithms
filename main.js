@@ -131,6 +131,7 @@ function deleteDups(arr) {
   return newArr;
 }
 // duplicates with new Set
+// write a function that takes a number of arrays and returns an array with no duplicates
 function uniteUnique(...arr) {
   const array = arr.flat();
   return [...new Set(array)];
@@ -222,16 +223,6 @@ function palindromeTests() {
 // palindromeTests() // uncomment to check code!
 
 // Extension: solve in 0(n) time
-
-function dupsTests() {
-  console.log(deleteDups(["a", "a", "a", "a", "a"]), " -> [a]");
-  console.log(deleteDups(["a", "b", "c", "d"]), " -> [a, b, c, d]");
-  console.log(
-    deleteDups(["a", "b", "c", "d", "a", "b", "c", "d"]),
-    " -> [a, b, c, d]"
-  );
-}
-dupsTests();
 
 // codewars duplicates
 const removeDuplicateIds = (obj) => {
@@ -342,7 +333,7 @@ const numberTimes = (array, num, idx = 0, count = 0) => {
   // add to the arguments an idx starting at 0 / count starting at 0
   // base case the be when the idx is at the end of the array
   // return the count of how many time the num was found
-  if (idx > array.length - 1) return count;
+  if (!array[idx]) return count;
   // check if the el is equal to the num
   if (array[idx] === num) {
     // increment the count
@@ -546,3 +537,250 @@ const memo = memoize(isPalindrome);
 // console.log(memo('hier'));
 // // console.log(memo('foof'))
 // console.log(memo('hier'));
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+/// third interview
+
+// Declare a variable 'myRandomString' and set it to the value 'Codesmith'
+
+const myRandomString = "Codesmith";
+// console.log(myRandomString)
+// /*
+// Create a function 'doubleChar' that takes a string as an argument and returns a string in which each character is repeated once.
+// For example, if we pass the string 'Hello World!!' to 'doubleChar' it should return the string 'HHeelllloo  WWoorrlldd!!'
+// */
+
+const doubleChar = (str, idx = 0, newStr = "") => {
+  // initiliaze a idx to 0
+  // initiliaze a newStr
+  // base case: when the idx is equal to the last idx of the arr
+  if (!str[idx]) return newStr;
+  // add the same letter to the new str
+  newStr += str[idx] + str[idx];
+  // recursive call invoking the func with incrementing the idx with the newStr and the original str
+  return doubleChar(str, ++idx, newStr);
+};
+
+console.log(doubleChar("Hello World!!"));
+
+//'HHeelllloo  WWoorrlldd!!'
+
+// Declare a variable 'numbers' and set it equal to an array containing the values 2, -14, -8, 22, 97, and 88
+
+const numbers = [2, -14, -8, 22, 97, 88];
+
+/*
+Declare a function 'isOdd' that takes one input (a number) and return a boolean indicating whether or not the number is odd.
+For example, if we call 'isOdd' with an input of 3 it will return true.
+*/
+
+const isOdd = (num) => {
+  if (num % 2 !== 0) return true;
+  else return false;
+};
+
+// console.log(isOdd(3)) // true
+// console.log(isOdd(4))
+
+/*
+Create a function 'atLeastOne' that takes in two inputs (an array and a callback function).
+The callback function will return a boolean value.
+The callback function will be called on every element in the array. If the callback function being called returns true for any of the elements in the array then 'atLeastOne' should return true. Otherwise it should return false.
+*/
+
+const atLeastOne = (array, cb) => {
+  // iterate thru the arr
+  for (let i = 0; i < array.length; i++) {
+    // check if the output of invoking the cb on the el is true
+    // return true
+    if (cb(array[i]) === true) return true;
+  }
+  // return false
+  return false;
+};
+
+console.log(atLeastOne(numbers, isOdd)); // true
+
+/*
+Write a function "memoryMaker" that accepts no parameters, and returns a function. Have the returned function accept a value, and every time the returned function is called, return an array of all the previously passed values.
+example:
+const iRemember = memoryMaker();
+iRemember('hello'); -> ['hello']
+iRemember(1); -> ['hello', 1]
+iRemember('world'); -> ['hello', 1, 'world']
+iRemember(true); -> ['hello', 1, 'world', true]
+*/
+
+const memoryMaker = () => {
+  // initiliaze an empty arr that hols all the args passed in the returned function
+  const arr = [];
+  // return a function def that takes one input
+  return (input) => {
+    // push the input into the arr
+    arr.push(input);
+    // return the arr
+    return arr;
+  };
+};
+
+// const iRemember = memoryMaker();
+// console.log(iRemember('hello'));
+// console.log(iRemember(1));
+// console.log(iRemember('world'));
+// console.log(iRemember(true));
+
+/*
+Create a function "sumAllElements" that takes in two arguments (an array of numbers and a initial value). "sumAllElements" will return the sum of the elements in the array starting at the initial value.
+Example:
+sumAllElements([1,2,3,4], 10) -> 20
+Note: Do NOT use any native JS methods, or loops
+*/
+const sumAllElements = (array, num, idx = 0) => {
+  // initiliaze an idx to 0
+  // base case: when the last el of the array at the idx is undefined
+  // return the num
+  if (!array[idx]) return num;
+  // reassign the num to the same num adding to it the el of the array
+  num += array[idx];
+  // recursive call invoke the function with incrementing the idx
+  return sumAllElements(array, num, ++idx);
+};
+
+console.log(sumAllElements([1, 2, 3, 4], 10));
+
+/*
+I have an array stock_prices_yesterday where:
+- The indices are the time in minutes past trade opening time, which was 9:30am local time
+- The values are the prices in dollars of Apple stock at the time
+For example, the stock cost $500 at 10:30am, so stock_prices_yesterday[60] = 500;
+Write a function 'bestProfit' for computing the best profit I could have made from 1 purchase
+and 1 sale of 1 Apple stock yesterday
+Return 0 if no profit is possible OR if input is invalid.
+More examples:
+bestProfit([ 100, 1, 123, 120 ]); // 122
+bestProfit([ 100, 100, 100, 100 ]); // 0
+bestProfit([ 100, 88, 44, 2 ]); // 0
+bestProfit([ 100, 88, 99, 300 ]); // 212
+*/
+const bestProfit = (stocks) => {
+  // check if the first el of the arr is less than the last el
+  if (stocks[stocks.length - 1] > stocks[0]) {
+    // if true
+    // get the max and the min of the arr
+    // initiliaze a var profit that hold the substraction the max - min
+    const profit = Math.max(...stocks) - Math.min(...stocks);
+    // return the profit var
+    return profit;
+    // if false return 0
+  } else return 0;
+};
+
+console.log(bestProfit([100, 1, 123, 120]));
+console.log(bestProfit([100, 100, 100, 100]));
+console.log(bestProfit([100, 88, 44, 2]));
+console.log(bestProfit([100, 88, 99, 300]));
+
+
+
+
+// 1
+// create a function that accepts a string and returns an object of the count of the vowels in that string.
+// vowelCount('Amazing'); // {a:2, i:1}
+function vowelCount(str) {
+  // initiliaze an empty obj 
+  const obj = {};
+  // initiliaze an arr of all the vowels 
+  const vowels = ['a', 'e', 'i', 'o','u'];
+  // convert the str (lowercase) to an arr 
+  const array = str.toLowerCase().split('');
+  // iterate thru the arr
+  return array.reduce((acc, el)=>{
+  // check if it is a vowel 
+    if(vowels.includes(el) {
+        // check if the el is present in the obj
+       if(el in acc) {
+       // if true increment its value by one
+      acc[el] += 1;
+       // if false store the el as a key in the obj assign the value to one
+    } else acc[el] = 1;
+       }
+        // return the obj
+      return acc;
+ 
+  }, {})
+}							
+
+// 2
+// create a function that accepts an array of numbers and returns an array with all the duplicates removed.
+// dedupe([1,2,1,2,1]) // [1,2]
+// dedupe([0,0,0]) // []
+function dedupe (array) {
+// initialize an array that holds all the non duplicate
+  // iterate thru the arr
+  const output = array.filter((el, idx)=> idx === array.indexOf(el));
+     // check if the idx of the el is equal to the output of using the indexof method with that el
+    // push the el into the output array
+  // return the arr
+  return output;
+}
+
+// 3
+/* create a function that accepts two arrays as arguments and return a boolean value. The function will 
+return true if the second array contains exactly all the squared elements from the first array. Otherwise 
+the function returns false  */
+// squares([1,2,2], [4,1,4]) // true
+// squares([1,2,3], [9,4,1,10]) // false
+// squares([1,3,3], [9,1,1]) // false
+function squares(arr1, arr2) {
+// iterate thru the first array
+  if(arr1.length === arr2.length){
+  for(let i=0; i < arr1.length; i++ ){
+   // check if the el*el is present into the second arr
+    // ** 2
+    if(arr2.includes(arr[i]**2)) {
+  // get the idx of that el*el in the second arr
+  // delete that el from the second arr
+      arr2.splice((arr2.indexOf(arr[i]**2), 1);
+  // if not true return false 
+    } else return false;
+  } 
+  } else return false;
+  // return true
+  return true;
+}
+
+// 4
+/* Create a function that takes an array of binary values as an arguments and returns the maximum of times the 
+value of one was found consecutively in the array. */
+// longestOnes([0, 1, 1, 0, 1]); // 2
+// longestOnes([0, 1, 0, 1, 1, 1, 0, 1, 1]); // 3
+// longestOnes([0, 1, 1, 1, 1]); // 4
+// longestOnes([1,1,0,1,1,1,1]) // 2 ----> 0
+function longestOnes(array, idx=0, output=[], counter=0) {
+// initiliaze an idx to 0
+// initialize an empty arr
+// initiliaze a counter 
+// base case: when the el of the input array is undefined return the output arr
+  // get the max value of the output array
+  if(!array[idx]){ 
+    output.push(counter);
+    return Math.max(...output);
+  }
+// check if the el is equal to one 
+  // if true increment the counter
+  if (array[idx]===1) counter++;
+   // if false push the counter to the output 
+   // reset the counter to 0
+  else {
+    output.push(counter);
+    counter = 0; 
+  }
+// recursive call with invoking the same func with increment the idx
+  return longestOnes(array, ++idx, output, counter);
+}
+
+
+
+
