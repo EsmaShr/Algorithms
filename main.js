@@ -682,46 +682,42 @@ console.log(bestProfit([100, 100, 100, 100]));
 console.log(bestProfit([100, 88, 44, 2]));
 console.log(bestProfit([100, 88, 99, 300]));
 
-
-
-
 // 1
 // create a function that accepts a string and returns an object of the count of the vowels in that string.
 // vowelCount('Amazing'); // {a:2, i:1}
 function vowelCount(str) {
-  // initiliaze an empty obj 
+  // initiliaze an empty obj
   const obj = {};
-  // initiliaze an arr of all the vowels 
-  const vowels = ['a', 'e', 'i', 'o','u'];
-  // convert the str (lowercase) to an arr 
-  const array = str.toLowerCase().split('');
+  // initiliaze an arr of all the vowels
+  const vowels = ["a", "e", "i", "o", "u"];
+  // convert the str (lowercase) to an arr
+  const array = str.toLowerCase().split("");
   // iterate thru the arr
-  return array.reduce((acc, el)=>{
-  // check if it is a vowel 
-    if(vowels.includes(el) {
-        // check if the el is present in the obj
-       if(el in acc) {
-       // if true increment its value by one
-      acc[el] += 1;
-       // if false store the el as a key in the obj assign the value to one
-    } else acc[el] = 1;
-       }
-        // return the obj
-      return acc;
- 
-  }, {})
-}							
+  return array.reduce((acc, el) => {
+    // check if it is a vowel
+    if (vowels.includes(el)) {
+      // check if the el is present in the obj
+      if (el in acc) {
+        // if true increment its value by one
+        acc[el] += 1;
+        // if false store the el as a key in the obj assign the value to one
+      } else acc[el] = 1;
+    }
+    // return the obj
+    return acc;
+  }, {});
+}
 
 // 2
 // create a function that accepts an array of numbers and returns an array with all the duplicates removed.
 // dedupe([1,2,1,2,1]) // [1,2]
 // dedupe([0,0,0]) // []
-function dedupe (array) {
-// initialize an array that holds all the non duplicate
+function dedupe(array) {
+  // initialize an array that holds all the non duplicate
   // iterate thru the arr
-  const output = array.filter((el, idx)=> idx === array.indexOf(el));
-     // check if the idx of the el is equal to the output of using the indexof method with that el
-    // push the el into the output array
+  const output = array.filter((el, idx) => idx === array.indexOf(el));
+  // check if the idx of the el is equal to the output of using the indexof method with that el
+  // push the el into the output array
   // return the arr
   return output;
 }
@@ -734,18 +730,18 @@ the function returns false  */
 // squares([1,2,3], [9,4,1,10]) // false
 // squares([1,3,3], [9,1,1]) // false
 function squares(arr1, arr2) {
-// iterate thru the first array
-  if(arr1.length === arr2.length){
-  for(let i=0; i < arr1.length; i++ ){
-   // check if the el*el is present into the second arr
-    // ** 2
-    if(arr2.includes(arr[i]**2)) {
-  // get the idx of that el*el in the second arr
-  // delete that el from the second arr
-      arr2.splice((arr2.indexOf(arr[i]**2), 1);
-  // if not true return false 
-    } else return false;
-  } 
+  // iterate thru the first array
+  if (arr1.length === arr2.length) {
+    for (let i = 0; i < arr1.length; i++) {
+      // check if the el*el is present into the second arr
+      // ** 2
+      if (arr2.includes(arr[i] ** 2)) {
+        // get the idx of that el*el in the second arr
+        // delete that el from the second arr
+        arr2.splice((arr2.indexOf(arr[i] ** 2), 1));
+        // if not true return false
+      } else return false;
+    }
   } else return false;
   // return true
   return true;
@@ -758,29 +754,70 @@ value of one was found consecutively in the array. */
 // longestOnes([0, 1, 0, 1, 1, 1, 0, 1, 1]); // 3
 // longestOnes([0, 1, 1, 1, 1]); // 4
 // longestOnes([1,1,0,1,1,1,1]) // 2 ----> 0
-function longestOnes(array, idx=0, output=[], counter=0) {
-// initiliaze an idx to 0
-// initialize an empty arr
-// initiliaze a counter 
-// base case: when the el of the input array is undefined return the output arr
+function longestOnes(array, idx = 0, output = [], counter = 0) {
+  // initiliaze an idx to 0
+  // initialize an empty arr
+  // initiliaze a counter
+  // base case: when the el of the input array is undefined return the output arr
   // get the max value of the output array
-  if(!array[idx]){ 
+  if (!array[idx]) {
     output.push(counter);
     return Math.max(...output);
   }
-// check if the el is equal to one 
+  // check if the el is equal to one
   // if true increment the counter
-  if (array[idx]===1) counter++;
-   // if false push the counter to the output 
-   // reset the counter to 0
+  if (array[idx] === 1) counter++;
+  // if false push the counter to the output
+  // reset the counter to 0
   else {
     output.push(counter);
-    counter = 0; 
+    counter = 0;
   }
-// recursive call with invoking the same func with increment the idx
+  // recursive call with invoking the same func with increment the idx
   return longestOnes(array, ++idx, output, counter);
 }
 
+// http://csbin.io/async/ challenge 9
+/* CHALLENGE 9 */
+let interval;
+let time = 1;
+class SecondClock {
+  constructor(cb) {
+    // ADD CODE HERE
+    // add a method to the newly created obj
+    this.cb = cb;
+  }
+  // ADD METHODS HERE
+  // add methods to the class start and reset
+  start() {
+    // initiliaze a time var for the starting time of the invocation
 
+    // set the interval
+    interval = setInterval(() => {
+      // check if the time value is greater than 60 if true reset the value to 1
+      if (time > 60) time = 1;
+      //with invoking setInterval: inkoking the cb as first para
+      this.cb(time);
+      // increment the time to the next second
+      time++;
+      // time interval as second para
+    }, 1000);
+  }
 
+  reset() {
+    // stop the interval var with the
+    clearInterval(interval);
+    time = 1;
+  }
+}
 
+// UNCOMMENT THESE TO TEST YOUR WORK!
+const clock = new SecondClock((val) => {
+  console.log(val);
+});
+console.log("Started Clock.");
+clock.start();
+setTimeout(() => {
+  clock.reset();
+  console.log("Stopped Clock after 6 seconds.");
+}, 6000);
